@@ -1,31 +1,6 @@
-cat > .gitignore << 'EOF'
-# Maven
 target/
 *.jar
-*.war
-*.ear
-
-# IDE
+*.class
 .idea/
 *.iml
-*.ipr
-*.iws
-.classpath
-.project
-.settings/
-.vscode/
-
-# OS
 .DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Other
-*.class
-HELP.md
-
-# Docker
-docker-compose.override.yml
-EOF
