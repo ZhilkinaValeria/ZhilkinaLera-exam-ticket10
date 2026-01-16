@@ -1,0 +1,46 @@
+# 1. Создайте новый docker-compose.yml с другими портами
+  cat > docker-compose.yml << 'EOF'
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: exam-postgres
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"  # Другой порт
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql-scripts/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest-alpine
+    container_name: exam-clickhouse
+    ports:
+      - "8124:8123"  # Другой порт
+      - "9001:9000"  # Другой порт
+    environment:
+      CLICKHOUSE_DB: agg_db
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: admin
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./sql-scripts/clickhouse-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: exam-rabbitmq
+    ports:
+      - "5673:5672"   # Другой порт
+      - "15673:15672" # Другой порт
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  postgres_data:
+  clickhouse_data:
+
